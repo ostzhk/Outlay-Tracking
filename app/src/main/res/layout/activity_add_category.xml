@@ -20,3 +20,4 @@
         android:id="@+id/button4"
         android:onClick="addCategory"/>
 </LinearLayout>
+
