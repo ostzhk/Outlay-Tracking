@@ -32,4 +32,5 @@ public class AddCategory extends Activity {
             finish();
         }
     }
+
 }
