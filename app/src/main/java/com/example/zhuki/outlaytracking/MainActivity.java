@@ -61,18 +61,17 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void showCategories(){
-        categories=dbHandler.getAllCategories();
-        if (categories.isEmpty()){
+    private void showCategories() {
+        categories = dbHandler.getAllCategories();
+        if (categories.isEmpty()) {
 
-        }else{
+        } else {
             categoryList.clear();
-            for (Category c:categories){
+            for (Category c : categories) {
                 categoryList.add(c.getCategory());
             }
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, categoryList);
         dropdown.setAdapter(adapter);
     }
-    //Master
 }
