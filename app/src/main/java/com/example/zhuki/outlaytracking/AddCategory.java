@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,6 +19,9 @@ public class AddCategory extends Activity {
         setContentView(R.layout.activity_add_category);
         editText = (EditText) findViewById(R.id.editText2);
         dbHandler = new DBHandler(this);
+        if(editText.requestFocus()) {
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
     }
 
     public void addCategory(View v){
