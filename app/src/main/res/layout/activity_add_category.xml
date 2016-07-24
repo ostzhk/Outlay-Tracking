@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.zhuki.outlaytracking.AddCategory"
+    android:orientation="horizontal">
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText2"
+        android:inputType="textShortMessage"
+        android:hint="@string/categoryName"/>
+
+    <Button
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:text="@string/add"
+        android:id="@+id/button4"
+        android:onClick="addCategory"/>
+</LinearLayout>
