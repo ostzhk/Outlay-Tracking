@@ -24,6 +24,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String OUTLAY_INFO = "outlay";
     private static final String ID = "id";
     private static final String COUNT = "count";
+    private static final String DATE = "date";
     private static final String CATEGORY = "category";
     private static final String CATEGORY_TABLE = "category_table";
     private static final String DELETED = "deleted";
@@ -38,7 +39,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_OUTLAY_INFO = "CREATE TABLE " + OUTLAY_INFO + "("
                 + ID + " INTEGER PRIMARY KEY," + COUNT + " INTEGER NOT NULL,"
-                + CATEGORY + " TEXT" + ")";
+                + CATEGORY + " TEXT," + DATE + " TEXT)";
 
         String CREATE_CATEGORY = "CREATE TABLE " + CATEGORY_TABLE + "("
                 + ID + " INTEGER PRIMARY KEY," + CATEGORY + " TEXT NOT NULL," + DELETED + " BOOLEAN" + ")";
@@ -55,6 +56,7 @@ public class DBHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(CATEGORY, outlay.getCategory());
         values.put(COUNT, outlay.getCount());
+        values.put(DATE, outlay.getDate());
         db.insert(OUTLAY_INFO, null, values);
         db.close();
     }
@@ -77,6 +79,7 @@ public class DBHandler extends SQLiteOpenHelper {
             do {
                 Outlay outlay = new Outlay(cursor.getString(2), Integer.parseInt(cursor.getString(1)));
                 outlay.setId(Integer.parseInt(cursor.getString(0)));
+                outlay.setDate(cursor.getString(3));
                 outlayList.add(outlay);
             } while (cursor.moveToNext());
         }
@@ -114,7 +117,6 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public void deleteOutlays(){
-        //String selectQuery = "SELECT CATEGORY, SUM(COUNT) FROM " + OUTLAY_INFO + " GROUP BY CATEGORY";
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(OUTLAY_INFO, null, null);
     }

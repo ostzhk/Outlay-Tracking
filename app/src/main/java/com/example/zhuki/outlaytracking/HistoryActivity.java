@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class HistoryActivity extends Activity {
@@ -25,7 +28,7 @@ public class HistoryActivity extends Activity {
         for (Outlay o:outlayList){
             TextView textView = new TextView(this);
             textView.setTextSize(26);
-            textView.setText(o.getCategory() + ": -" + o.getCount() + " руб.");
+            textView.setText(o.getDate() + " " + o.getCategory() + ": -" + o.getCount() + " руб.");
             linearLayout.addView(textView);
         }
     }
