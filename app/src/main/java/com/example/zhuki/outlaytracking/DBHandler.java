@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public class DBHandler extends SQLiteOpenHelper {
     //DB settings
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "dbo";
 
     //Tables cells
@@ -27,10 +27,12 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String CATEGORY = "category";
     private static final String CATEGORY_TABLE = "category_table";
     private static final String DELETED = "deleted";
+    Context context;
 
 
     public DBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context=context;
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -104,10 +106,16 @@ public class DBHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
-                Outlay outlay = new Outlay(cursor.getString(1), Integer.parseInt(cursor.getString(0)));
-                outlayList.put(cursor.getString(1), outlay);
+                Outlay outlay = new Outlay(cursor.getString(0), Integer.parseInt(cursor.getString(1)));
+                outlayList.put(cursor.getString(0), outlay);
             } while (cursor.moveToNext());
         }
         return outlayList;
+    }
+
+    public void deleteOutlays(){
+        //String selectQuery = "SELECT CATEGORY, SUM(COUNT) FROM " + OUTLAY_INFO + " GROUP BY CATEGORY";
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(OUTLAY_INFO, null, null);
     }
 }

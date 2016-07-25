@@ -5,7 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal">
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete_all"
+            android:id="@+id/button5"
+            android:layout_gravity="right"
+            android:layout_marginRight="16dp"
+            android:onClick="deleteAll"/>
     <LinearLayout
         android:id="@+id/historyLayout"
         android:layout_width="match_parent"
@@ -15,7 +26,7 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context=".HistoryActivity">
-
+        tools:context=".HistoryActivity"/>
     </LinearLayout>
+
 </ScrollView>

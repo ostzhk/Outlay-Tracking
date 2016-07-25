@@ -3,6 +3,7 @@ package com.example.zhuki.outlaytracking;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,5 +28,11 @@ public class HistoryActivity extends Activity {
             textView.setText(o.getCategory() + ": -" + o.getCount() + " руб.");
             linearLayout.addView(textView);
         }
+    }
+
+    public void deleteAll(View view){
+        dbHandler=new DBHandler(this);
+        dbHandler.deleteOutlays();
+        recreate();
     }
 }
