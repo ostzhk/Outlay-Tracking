@@ -66,6 +66,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/report"
-        android:id="@+id/button3"
+        android:id="@+id/button4"
         android:onClick="reportActivity"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/history"
+        android:id="@+id/button3"
+        android:onClick="historyActivity"/>
 </LinearLayout>

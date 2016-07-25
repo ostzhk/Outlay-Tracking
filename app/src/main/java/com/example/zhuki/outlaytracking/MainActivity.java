@@ -79,6 +79,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void historyActivity(View view) {
+        Intent intent = new Intent(this, HistoryActivity.class);
+        startActivity(intent);
+    }
+
     private void showCategories() {
         categories = dbHandler.getAllCategories();
         if (!categories.isEmpty()) {

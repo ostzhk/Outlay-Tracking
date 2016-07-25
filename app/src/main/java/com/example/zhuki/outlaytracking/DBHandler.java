@@ -5,9 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Zhuki on 22.07.2016.
@@ -92,5 +95,19 @@ public class DBHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         return categoryList;
+    }
+
+    public Map<String, Outlay> getSumOfCategory() {
+        Map<String, Outlay> outlayList = new HashMap<>();
+        String selectQuery = "SELECT CATEGORY, SUM(COUNT) FROM " + OUTLAY_INFO + " GROUP BY CATEGORY";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Outlay outlay = new Outlay(cursor.getString(1), Integer.parseInt(cursor.getString(0)));
+                outlayList.put(cursor.getString(1), outlay);
+            } while (cursor.moveToNext());
+        }
+        return outlayList;
     }
 }
