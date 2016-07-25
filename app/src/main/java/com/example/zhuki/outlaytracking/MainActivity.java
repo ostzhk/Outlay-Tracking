@@ -1,18 +1,24 @@
 package com.example.zhuki.outlaytracking;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> categoryList = new ArrayList<>();
     List<Category> categories;
     String selected_item;
+    private int year, month, day;
+    Calendar calendar;
+    String date;
 
 
     @Override
@@ -32,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
         dropdown = (Spinner) findViewById(R.id.spinner);
         dbHandler = new DBHandler(this);
         showCategories();
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        showDate(year, month, day);
         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -67,7 +81,9 @@ public class MainActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(this, "Введите сумму", Toast.LENGTH_SHORT);
             toast.show();
         } else {
-            dbHandler.addOutlay(new Outlay(selected_item, Integer.parseInt(editText.getText().toString())));
+            Outlay outlay = new Outlay(selected_item, Integer.parseInt(editText.getText().toString()));
+            outlay.setDate(date);
+            dbHandler.addOutlay(outlay);
             Toast toast = Toast.makeText(this, "- " + editText.getText().toString() + " руб.", Toast.LENGTH_SHORT);
             toast.show();
             editText.setText("");
@@ -94,5 +110,31 @@ public class MainActivity extends AppCompatActivity {
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, categoryList);
         dropdown.setAdapter(adapter);
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        // TODO Auto-generated method stub
+        if (id == 999) {
+            return new DatePickerDialog(this, myDateListener, year, month, day);
+        }
+        return null;
+    }
+
+    private DatePickerDialog.OnDateSetListener myDateListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker arg0, int arg1, int arg2, int arg3) {
+            showDate(arg1, arg2+1, arg3);
+        }
+    };
+
+    private void showDate(int year, int month, int day) {
+        Button button = (Button) findViewById(R.id.buttonDate);
+        date = new StringBuilder().append(day).append("/").append(month).append("/").append(year).toString();
+        button.setText(date);
+    }
+
+    public void pickDate(View view) {
+        showDialog(999);
     }
 }

@@ -25,7 +25,6 @@ public class Outlay {
     public Outlay(String category, int count) {
         this.category=category;
         this.count=count;
-        this.date = getDateTime();
     }
 
     private String getDateTime() {
