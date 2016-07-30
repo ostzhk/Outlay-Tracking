@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, categoryList);
         dropdown.setAdapter(adapter);
+        dropdown.setSelection(categories.size()-1);
     }
 
     @Override
@@ -131,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
     private void showDate(int year, int month, int day) {
         Button button = (Button) findViewById(R.id.buttonDate);
         date = new StringBuilder().append(year).append("-").append(month+1).append("-").append(day).toString();
-        button.setText(date);
+        button.setText(new StringBuilder().append(day).append("-").append(month+1).append("-").append(year).toString());
     }
 
     public void pickDate(View view) {

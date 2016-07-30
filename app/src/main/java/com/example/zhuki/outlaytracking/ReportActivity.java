@@ -43,11 +43,11 @@ public class ReportActivity extends Activity {
     private void showDate(int year, int month, int day) {
         Button button = (Button) findViewById(R.id.button6);
         date = new StringBuilder().append(year).append("-").append(month+1).append("-").append(day).toString();
-        button.setText(date);
+        button.setText(new StringBuilder().append(day).append("-").append(month+1).append("-").append(year).toString());
 
         Button button1 = (Button) findViewById(R.id.button7);
         date2 = new StringBuilder().append(year).append("-").append(month+2).append("-").append(day).toString();
-        button1.setText(date2);
+        button1.setText(new StringBuilder().append(day).append("-").append(month+2).append("-").append(year).toString());
     }
 
     @Override

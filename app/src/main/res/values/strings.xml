@@ -6,4 +6,5 @@
     <string name="count">Сумма</string>
     <string name="history">История</string>
     <string name="delete_all">Удалить все</string>
+    <string name="showReport">показать</string>
 </resources>

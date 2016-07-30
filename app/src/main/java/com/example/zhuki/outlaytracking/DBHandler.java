@@ -118,6 +118,12 @@ public class DBHandler extends SQLiteOpenHelper {
         return outlayList;
     }
 
+    public void deleteThisOutlay(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + OUTLAY_INFO + " WHERE " + ID + " = " + id;
+        db.execSQL(query);
+    }
+
     public void deleteOutlays(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(OUTLAY_INFO, null, null);
