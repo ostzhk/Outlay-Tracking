@@ -80,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(editText.getText().toString())) {
             Toast toast = Toast.makeText(this, "Введите сумму", Toast.LENGTH_SHORT);
             toast.show();
+        } else if (dropdown.getSelectedItem()==null){
+            Toast.makeText(this, "Добавьте и выбирете категорию", Toast.LENGTH_SHORT).show();
         } else {
             Outlay outlay = new Outlay(selected_item, Integer.parseInt(editText.getText().toString()));
             outlay.setDate(date);
@@ -101,9 +103,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showCategories() {
+        categoryList.clear();
         categories = dbHandler.getAllCategories();
         if (!categories.isEmpty()) {
-            categoryList.clear();
             for (Category c : categories) {
                 categoryList.add(c.getCategory());
             }
