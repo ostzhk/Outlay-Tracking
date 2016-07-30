@@ -39,7 +39,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_OUTLAY_INFO = "CREATE TABLE " + OUTLAY_INFO + "("
                 + ID + " INTEGER PRIMARY KEY," + COUNT + " INTEGER NOT NULL,"
-                + CATEGORY + " TEXT," + DATE + " TEXT)";
+                + CATEGORY + " TEXT," + DATE + " DATE)";
 
         String CREATE_CATEGORY = "CREATE TABLE " + CATEGORY_TABLE + "("
                 + ID + " INTEGER PRIMARY KEY," + CATEGORY + " TEXT NOT NULL," + DELETED + " BOOLEAN" + ")";
@@ -102,14 +102,16 @@ public class DBHandler extends SQLiteOpenHelper {
         return categoryList;
     }
 
-    public Map<String, Outlay> getSumOfCategory() {
+    public Map<String, Outlay> getSumOfCategory(String date, String date2) {
         Map<String, Outlay> outlayList = new HashMap<>();
-        String selectQuery = "SELECT CATEGORY, SUM(COUNT) FROM " + OUTLAY_INFO + " GROUP BY CATEGORY";
+        String selectQuery = "SELECT CATEGORY, SUM(COUNT), DATE FROM " + OUTLAY_INFO + " WHERE DATE BETWEEN '"+date+"' " +
+                "AND "+"'"+date2+"' GROUP BY CATEGORY";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
                 Outlay outlay = new Outlay(cursor.getString(0), Integer.parseInt(cursor.getString(1)));
+                outlay.setDate(cursor.getString(2));
                 outlayList.put(cursor.getString(0), outlay);
             } while (cursor.moveToNext());
         }

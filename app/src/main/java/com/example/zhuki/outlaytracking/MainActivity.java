@@ -124,13 +124,13 @@ public class MainActivity extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener myDateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker arg0, int arg1, int arg2, int arg3) {
-            showDate(arg1, arg2+1, arg3);
+            showDate(arg1, arg2, arg3);
         }
     };
 
     private void showDate(int year, int month, int day) {
         Button button = (Button) findViewById(R.id.buttonDate);
-        date = new StringBuilder().append(day).append("/").append(month).append("/").append(year).toString();
+        date = new StringBuilder().append(year).append("-").append(month+1).append("-").append(day).toString();
         button.setText(date);
     }
 
