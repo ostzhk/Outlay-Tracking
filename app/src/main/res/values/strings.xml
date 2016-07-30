@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Outlay Tracking</string>
     <string name="report">Отчет</string>
-    <string name="add">+</string>
+    <string name="add">...</string>
     <string name="categoryName">Введите категорию</string>
     <string name="count">Сумма</string>
     <string name="history">История</string>

@@ -124,6 +124,12 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
+    public void deleteThisCategory(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + CATEGORY_TABLE + " WHERE " + ID + " = " + id;
+        db.execSQL(query);
+    }
+
     public void deleteOutlays(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(OUTLAY_INFO, null, null);
