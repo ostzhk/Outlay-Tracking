@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Outlay Tracking</string>
+    <string name="app_name">Simple Tracker</string>
     <string name="report">Отчет</string>
     <string name="add">...</string>
     <string name="categoryName">Введите категорию</string>

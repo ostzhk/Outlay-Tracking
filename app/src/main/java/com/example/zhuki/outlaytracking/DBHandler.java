@@ -105,7 +105,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public Map<String, Outlay> getSumOfCategory(String date, String date2) {
         Map<String, Outlay> outlayList = new HashMap<>();
         String selectQuery = "SELECT CATEGORY, SUM(COUNT), DATE FROM " + OUTLAY_INFO + " WHERE DATE BETWEEN '"+date+"' " +
-                "AND "+"'"+date2+"' GROUP BY CATEGORY";
+                "AND "+"'"+date2+"' GROUP BY CATEGORY ORDER BY COUNT DESC";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {

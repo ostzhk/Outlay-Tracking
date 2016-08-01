@@ -3,11 +3,14 @@ package com.example.zhuki.outlaytracking;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +21,7 @@ public class AddCategory extends Activity {
     EditText editText;
     DBHandler dbHandler;
     List<Category> categories;
-    LinearLayout linearLayout;
+    TableLayout tableLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +33,7 @@ public class AddCategory extends Activity {
         if(editText.requestFocus()) {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
-        linearLayout = (LinearLayout) findViewById(R.id.addLayout);
+        tableLayout = (TableLayout) findViewById(R.id.addLayout);
         showCategories();
     }
 
@@ -49,20 +52,26 @@ public class AddCategory extends Activity {
         categories = dbHandler.getAllCategories();
         for (final Category c:categories) {
             TextView textView = new TextView(this);
-            textView.setTextSize(26);
+            textView.setTextSize(16);
             textView.setText(c.getCategory());
+            textView.setGravity(Gravity.LEFT);
+            textView.setWidth(450);
+
             Button button = new Button(this);
             button.setText("Удалить");
+            button.setGravity(Gravity.RIGHT);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     dbHandler.deleteThisCategory(c.getId());
-                    linearLayout.removeAllViewsInLayout();
+                    tableLayout.removeAllViewsInLayout();
                     showCategories();
                 }
             });
-            linearLayout.addView(textView);
-            linearLayout.addView(button);
+            TableRow tableRow = new TableRow(this);
+            tableRow.addView(textView);
+            tableRow.addView(button);
+            tableLayout.addView(tableRow);
         }
     }
 
