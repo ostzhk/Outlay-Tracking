@@ -2,64 +2,69 @@ package com.example.zhuki.outlaytracking;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.Layout;
-import android.view.Gravity;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HistoryActivity extends Activity {
+    final static int MENU_DELETE = 1;
     List<Outlay> outlayList;
-    TableLayout tableLayout;
+    List<String> outlayListString = new ArrayList<>();
     DBHandler dbHandler;
+    ListView lvMain;
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        menu.add(0, MENU_DELETE, 0, "Удалить");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        dbHandler.deleteThisOutlay(info.targetView.getId());
+        showHistory();
+        return super.onContextItemSelected(item);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.NewTheme);
         setContentView(R.layout.history_activity);
-        tableLayout = (TableLayout) findViewById(R.id.historyLayout);
+        lvMain = (ListView) findViewById(R.id.listItem);
         dbHandler = new DBHandler(this);
         showHistory();
+
+        registerForContextMenu(lvMain);
+
 
     }
 
     private void showHistory() {
         outlayList = dbHandler.getAllOutlays();
 
+        // создаем адаптер
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1,  outlayListString);
+
+        // присваиваем адаптер списку
+        lvMain.setAdapter(adapter);
+
         for (final Outlay o : outlayList) {
-            TextView textView = new TextView(this);
-            textView.setTextSize(16);
-            textView.setText(o.getDate() + " " + o.getCategory() + ": -" + o.getCount() + " руб.");
-            textView.setGravity(Gravity.LEFT);
-            textView.setWidth(450);
-
-
-            Button button = new Button(this);
-            button.setText("Удалить");
-            button.setGravity(Gravity.RIGHT);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dbHandler.deleteThisOutlay(o.getId());
-                    tableLayout.removeAllViewsInLayout();
-                    showHistory();
-                }
-            });
-            TableRow tableRow = new TableRow(this);
-            tableRow.addView(textView);
-            tableRow.addView(button);
-            tableLayout.addView(tableRow);
+            outlayListString.add(o.getDate() + " " + o.getCategory() + " "
+                    + String.valueOf(o.getCount()) + " руб.");
         }
+
     }
 
     public void deleteAll(View view) {
-        dbHandler = new DBHandler(this);
         dbHandler.deleteOutlays();
         recreate();
     }
