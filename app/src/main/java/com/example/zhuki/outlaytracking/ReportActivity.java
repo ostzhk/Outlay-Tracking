@@ -8,9 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.TextView;
 
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
@@ -23,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Map;
 
-public class ReportActivity extends Activity {
+public class ReportActivity extends Activity implements View.OnClickListener {
     Map<String, Outlay> outlayList;
     PieChart pieChart;
     DBHandler dbHandler;
@@ -33,6 +31,9 @@ public class ReportActivity extends Activity {
     int anInt;
     int finalSum;
     private int year, month, day;
+    Button button;
+
+
     private DatePickerDialog.OnDateSetListener myDateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker arg0, int arg1, int arg2, int arg3) {
@@ -45,6 +46,9 @@ public class ReportActivity extends Activity {
         super.onCreate(savedInstanceState);
         setTheme(R.style.NewTheme);
         setContentView(R.layout.activity_report);
+        button = (Button) findViewById(R.id.button8);
+        button.setOnClickListener(this);
+
         pieChart = (PieChart) findViewById(R.id.chart);
         pieChart.setUsePercentValues(true);
         pieChart.setDescription("");
@@ -67,17 +71,15 @@ public class ReportActivity extends Activity {
         // enable rotation of the chart by touch
         pieChart.setRotationEnabled(true);
         pieChart.setHighlightPerTapEnabled(true);
-
         calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
-        day = calendar.get(Calendar.DAY_OF_MONTH);
+        day = 1;
         showDate(year, month, day);
         dbHandler = new DBHandler(this);
-        outlayList = dbHandler.getSumOfCategory(date, date2);
+        showReport();
 
-        finalSum = 0;
-        outlayList=dbHandler.getSumOfCategory(date, date2);
+
 
         Legend l = pieChart.getLegend();
         l.setPosition(Legend.LegendPosition.ABOVE_CHART_CENTER);
@@ -87,7 +89,6 @@ public class ReportActivity extends Activity {
         l.setYEntrySpace(0f);
         l.setYOffset(0f);
 
-        setData();
 
         pieChart.setEntryLabelColor(Color.DKGRAY);
         pieChart.setEntryLabelTextSize(18f);
@@ -151,12 +152,13 @@ public class ReportActivity extends Activity {
 
     private void showDate(int year, int month, int day) {
         Button button = (Button) findViewById(R.id.button6);
-        date = new StringBuilder().append(year).append("-").append(month + 1).append("-").append(day).toString();
-        button.setText(new StringBuilder().append(day).append("-").append(month + 1).append("-").append(year).toString());
+        date = String.valueOf(year) + "-" + (month + 1) + "-" + day;
+        button.setText(String.valueOf(day) + "-" + (month + 1) + "-" + year);
 
         Button button1 = (Button) findViewById(R.id.button7);
-        date2 = new StringBuilder().append(year).append("-").append(month + 2).append("-").append(day).toString();
-        button1.setText(new StringBuilder().append(day).append("-").append(month + 2).append("-").append(year).toString());
+        date2 = String.valueOf(year) + "-" + (month + 2) + "-" + day;
+        button1.setText(String.valueOf(day) + "-" + (month + 2) + "-" + year);
+
     }
 
     @Override
@@ -164,6 +166,7 @@ public class ReportActivity extends Activity {
         // TODO Auto-generated method stub
         if (id == 999) {
             return new DatePickerDialog(this, myDateListener, year, month, day);
+
         } else if (id == 998) {
             return new DatePickerDialog(this, myDateListener, year, month + 1, day);
         }
@@ -179,11 +182,16 @@ public class ReportActivity extends Activity {
         }
     }
 
-    public void showReport(View view){
+    public void showReport() {
         finalSum = 0;
-        outlayList=dbHandler.getSumOfCategory(date, date2);
+        outlayList = dbHandler.getSumOfCategory(date, date2);
         setData();
         pieChart.animateXY(2000, 2000);
         pieChart.invalidate();
+    }
+
+    @Override
+    public void onClick(View v) {
+        showReport();
     }
 }
