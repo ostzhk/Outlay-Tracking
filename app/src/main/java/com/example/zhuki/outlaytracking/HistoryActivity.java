@@ -3,63 +3,55 @@ package com.example.zhuki.outlaytracking;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HistoryActivity extends Activity {
-    final static int MENU_DELETE = 1;
+public class HistoryActivity extends Activity implements View.OnClickListener {
     List<Outlay> outlayList;
-    List<String> outlayListString = new ArrayList<>();
     DBHandler dbHandler;
-    ListView lvMain;
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        menu.add(0, MENU_DELETE, 0, "Удалить");
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        dbHandler.deleteThisOutlay(info.targetView.getId());
-        showHistory();
-        return super.onContextItemSelected(item);
-    }
-
+    TableLayout tableLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.NewTheme);
         setContentView(R.layout.history_activity);
-        lvMain = (ListView) findViewById(R.id.listItem);
         dbHandler = new DBHandler(this);
+        tableLayout = (TableLayout) findViewById(R.id.historyLayout);
         showHistory();
-
-        registerForContextMenu(lvMain);
-
-
     }
 
     private void showHistory() {
         outlayList = dbHandler.getAllOutlays();
+        for (Outlay o : outlayList) {
+            TableRow tableRow = new TableRow(this);
+            TextView textView= new TextView(this);
+            Button button = new Button(this);
 
-        // создаем адаптер
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1,  outlayListString);
+            textView.setText(o.getDate() + o.getCategory() + o.getCount());
 
-        // присваиваем адаптер списку
-        lvMain.setAdapter(adapter);
+//            button.setBackgroundResource(R.drawable);
+            button.setOnClickListener(this);
+            button.setGravity(Gravity.END);
 
-        for (final Outlay o : outlayList) {
-            outlayListString.add(o.getDate() + " " + o.getCategory() + " "
-                    + String.valueOf(o.getCount()) + " руб.");
+
+
+            tableRow.addView(textView);
+            tableRow.addView(button);
+            tableLayout.addView(tableRow);
         }
 
     }
@@ -67,5 +59,24 @@ public class HistoryActivity extends Activity {
     public void deleteAll(View view) {
         dbHandler.deleteOutlays();
         recreate();
+    }
+
+    @Override
+    public void onClick(View v) {
+        //Creating the instance of PopupMenu
+        PopupMenu popup = new PopupMenu(this, v);
+        //Inflating the Popup using xml file
+        popup.getMenuInflater()
+                .inflate(R.menu.history_menu, popup.getMenu());
+
+        //registering popup with OnMenuItemClickListener
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+
+                return true;
+            }
+        });
+
+        popup.show(); //showing popup menu
     }
 }

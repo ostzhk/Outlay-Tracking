@@ -7,4 +7,6 @@
     <string name="history">История</string>
     <string name="delete_all">Удалить все</string>
     <string name="showReport">показать</string>
+    <string name="edit">Редактировать</string>
+    <string name="delete">Удалить</string>
 </resources>
