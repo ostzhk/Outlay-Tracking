@@ -134,4 +134,26 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(OUTLAY_INFO, null, null);
     }
+
+    public Outlay selectOutlay(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT id, DATE, CATEGORY, COUNT FROM " + OUTLAY_INFO + " WHERE " + ID + " = " + id;
+        Cursor cursor = db.rawQuery(query, null);
+        Outlay outlay = null;
+        if (cursor.moveToFirst()) {
+            do {
+                 outlay = new Outlay(cursor.getString(2), Integer.parseInt(cursor.getString(3)));
+                outlay.setId(cursor.getInt(0));
+                outlay.setDate(cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
+        return outlay;
+    }
+
+    public void changeOutlay(Outlay outlay){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE " + OUTLAY_INFO + " SET DATE='" + outlay.getDate() + "', CATEGORY='" +
+                outlay.getCategory() + "', COUNT=" + outlay.getCount() + " WHERE " + ID + " = " + outlay.getId();
+        db.execSQL(query);
+    }
 }
