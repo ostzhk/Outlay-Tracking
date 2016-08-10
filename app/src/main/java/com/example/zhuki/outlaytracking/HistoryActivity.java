@@ -43,7 +43,7 @@ public class HistoryActivity extends Activity implements View.OnClickListener {
 
             textView.setText(o.getDate() + o.getCategory() + o.getCount());
 
-//            button.setBackgroundResource(R.drawable);
+            button.setBackgroundResource(R.drawable.ic_mode_edit_black_18dp);
             button.setOnClickListener(this);
             button.setGravity(Gravity.END);
 
